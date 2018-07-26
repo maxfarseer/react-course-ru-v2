@@ -5,6 +5,7 @@
     <title>React [RU] Tutorial v2</title>
     <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
     <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/prop-types@15.6/prop-types.js"></script>
     <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
 
     <style>
@@ -46,24 +47,28 @@
 
       const myNews = [
         {
-          id: 1, // добавили id
+          id: 1,
           author: 'Саша Печкин',
-          text: 'В четверг, четвертого числа...'
+          text: 'В четверг, четвертого числа...',
+          bigText: 'в четыре с четвертью часа четыре чёрненьких чумазеньких чертёнка чертили чёрными чернилами чертёж.'
         },
         {
           id: 2,
           author: 'Просто Вася',
-          text: 'Считаю, что $ должен стоить 35 рублей!'
+          text: 'Считаю, что $ должен стоить 35 рублей!',
+          bigText: 'А евро 42!'
         },
         {
           id: 3,
           author: 'Max Frontend',
-          text: 'Прошло 2 года с прошлых учебников, а $ так и не стоит 35'
+          text: 'Прошло 2 года с прошлых учебников, а $ так и не стоит 35',
+          bigText: 'А евро опять выше 70.'
         },
         {
           id: 4,
           author: 'Гость',
-          text: 'Бесплатно. Без смс, про реакт, заходи - https://maxpfrontend.ru'
+          text: 'Бесплатно. Без смс, про реакт, заходи - https://maxpfrontend.ru',
+          bigText: 'Еще есть группа VK, telegram и канал на youtube! Вся инфа на сайте, не реклама!'
         }
       ];
 
@@ -77,6 +82,13 @@
             </div>
           )
         }
+      }
+
+      Article.propTypes = {
+        data: PropTypes.shape({
+          author: PropTypes.string.isRequired,
+          text: PropTypes.string.isRequired
+        })
       }
 
       class News extends React.Component {
@@ -106,6 +118,10 @@
             </div>
           );
         }
+      }
+
+      News.propTypes = {
+        data: PropTypes.array.isRequired
       }
 
       const App = () => {
