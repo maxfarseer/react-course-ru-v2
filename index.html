@@ -48,7 +48,7 @@
           const { data } = this.props // аналогично записи const data = this.props.data
           let newsTemplate
 
-          if (data.length > 0) {
+          if (data.length) {
             newsTemplate = data.map(function(item) {
               return (
                 <div key={item.id}>
