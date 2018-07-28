@@ -151,6 +151,9 @@
           super(props)
           this.input = React.createRef()
         }
+        componentDidMount() {
+          this.input.current.focus()
+        }
         onBtnClickHandler = () => {
           alert(this.input.current.value)
         }
