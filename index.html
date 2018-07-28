@@ -39,6 +39,9 @@
         margin: 10px 0 0 0;
         display: block;
       }
+      .test-input {
+        margin: 0 5px 5px 0;
+      }
     </style>
   </head>
   <body>
@@ -83,7 +86,6 @@
         render() {
           const { author, text, bigText } = this.props.data
           const { visible } = this.state
-          console.log('render', this); // добавили console.log
           return (
             <div className='article'>
               <p className='news__author'>{author}:</p>
@@ -111,9 +113,6 @@
         state = {
           counter: 0,
         }
-        handleCounter = () => {
-          this.setState({ counter: ++this.state.counter })
-        }
         renderNews = () => {
           const { data } = this.props
           let newsTemplate = null
@@ -136,9 +135,8 @@
             <div className='news'>
               {this.renderNews()}
               {
-                data.length ? <strong onClick={this.handleCounter} className={'news__count'}>Всего новостей: {data.length}</strong> : null
+                data.length ? <strong className={'news__count'}>Всего новостей: {data.length}</strong> : null
               }
-              <p>Всего кликов: { counter }</p>
             </div>
           );
         }
@@ -148,10 +146,34 @@
         data: PropTypes.array.isRequired
       }
 
+      class TestInput extends React.Component {
+        constructor(props) {
+          super(props)
+          this.input = React.createRef()
+        }
+        onBtnClickHandler = () => {
+          alert(this.input.current.value)
+        }
+        render() {
+          return (
+            <React.Fragment>
+                <input
+                  className='test-input'
+                  defaultValue=''
+                  placeholder='введите значение'
+                  ref={this.input}
+                />
+              <button onClick={this.onBtnClickHandler}>Показать alert</button>
+            </React.Fragment>
+          )
+        }
+      }
+
       const App = () => {
         return (
           <React.Fragment>
             <h3>Новости</h3>
+            <TestInput />
             <News data={myNews}/>
           </React.Fragment>
         )
