@@ -75,7 +75,7 @@
   <body>
     <div id="root"></div>
     <script type="text/babel">
-
+  
       const myNews = [
         {
           id: 1,
@@ -102,7 +102,7 @@
           bigText: 'Еще есть группа VK, telegram и канал на youtube! Вся инфа на сайте, не реклама!'
         }
       ];
-
+  
       class Article extends React.Component {
         state = {
           visible: false,
@@ -128,23 +128,21 @@
           )
         }
       }
-
+  
       Article.propTypes = {
         data: PropTypes.shape({
+          id: PropTypes.number.isRequired, // добавили id, это число, обязательно
           author: PropTypes.string.isRequired,
           text: PropTypes.string.isRequired,
           bigText: PropTypes.string.isRequired
         })
       }
-
+  
       class News extends React.Component {
-        state = {
-          counter: 0,
-        }
         renderNews = () => {
           const { data } = this.props
           let newsTemplate = null
-          
+  
           if (data.length) {
             newsTemplate = data.map(function(item) {
               return <Article key={item.id} data={item}/>
@@ -152,13 +150,12 @@
           } else {
             newsTemplate = <p>К сожалению новостей нет</p>
           }
-          
+  
           return newsTemplate
         }
         render() {
           const { data } = this.props
-          const { counter } = this.state
-          
+  
           return (
             <div className='news'>
               {this.renderNews()}
@@ -169,21 +166,27 @@
           );
         }
       }
-
+  
       News.propTypes = {
         data: PropTypes.array.isRequired
       }
-
+  
       class Add extends React.Component {
         state = {
           name: '',
           text: '',
+          bigText: '',
           agree: false,
         }
         onBtnClickHandler = (e) => {
           e.preventDefault()
-          const { name, text } = this.state
-          alert(name + '\n' + text)
+          const { name, text, bigText } = this.state
+          this.props.onAddNews({
+            id: +new Date(),
+            author: name,
+            text,
+            bigText,
+          })
         }
         handleChange = (e) => {
           const { id, value } = e.currentTarget
@@ -200,7 +203,7 @@
           return false
         }
         render() {
-          const { name, text, agree } = this.state
+          const { name, text, bigText, agree } = this.state
           return (
             <form className='add'>
               <input
@@ -218,6 +221,13 @@
                 placeholder='Текст новости'
                 value={text}
               ></textarea>
+              <textarea
+                id='bigText'
+                onChange={this.handleChange}
+                className='add__text'
+                placeholder='Текст новости подробно'
+                value={bigText}
+              ></textarea>
               <label className='add__checkrule'>
                 <input type='checkbox' onChange={this.handleCheckboxChange} /> Я согласен с правилами
               </label>
@@ -231,23 +241,36 @@
           )
         }
       }
-
-      const App = () => {
-        return (
-          <React.Fragment>
-            <Add />
-            <h3>Новости</h3>
-            <News data={myNews}/>
-          </React.Fragment>
-        )
+  
+      Add.propTypes = {
+        onAddNews: PropTypes.func.isRequired,
       }
-
+  
+      class App extends React.Component {
+        state = {
+          news: myNews,
+        }
+        handleAddNews = (data) => {
+          const nextNews = [data, ...this.state.news]
+          this.setState({ news: nextNews })
+        }
+        render() {
+          return (
+            <React.Fragment>
+              <Add onAddNews={this.handleAddNews}/>
+              <h3>Новости</h3>
+              <News data={this.state.news}/>
+            </React.Fragment>
+          )
+        }
+      }
+  
       ReactDOM.render(
         <App />,
         document.getElementById('root')
       );
-
+  
     </script>
-
+  
   </body>
 </html>
