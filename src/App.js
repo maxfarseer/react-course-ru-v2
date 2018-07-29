@@ -1,7 +1,6 @@
 import React from 'react'
 import { Add } from './components/Add'
 import { News } from './components/News'
-// удален импорт newsData
 import './App.css'
 
 class App extends React.Component {
@@ -18,7 +17,7 @@ class App extends React.Component {
       .then(data => {
         setTimeout(() => {
           this.setState({ isLoading: false, news: data })
-        }, 3000)
+        }, 1000)
       })
   }
   handleAddNews = data => {

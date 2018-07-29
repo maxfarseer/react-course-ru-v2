@@ -7,8 +7,8 @@ class News extends React.Component {
     filteredNews: this.props.data,
   }
 
-  componentWillReceiveProps(nextProps) {
-    let nextFilteredNews = [...nextProps.data]
+  static getDerivedStateFromProps(props, state) {
+    let nextFilteredNews = [...props.data]
 
     nextFilteredNews.forEach((item, index) => {
       if (item.bigText.toLowerCase().indexOf('pubg') !== -1) {
@@ -16,10 +16,13 @@ class News extends React.Component {
       }
     })
 
-    this.setState({ filteredNews: nextFilteredNews })
+    return {
+      filteredNews: nextFilteredNews,
+    }
   }
+
   renderNews = () => {
-    const { filteredNews } = this.state // используем состояние
+    const { filteredNews } = this.state
     let newsTemplate = null
 
     if (filteredNews.length) {
@@ -33,7 +36,7 @@ class News extends React.Component {
     return newsTemplate
   }
   render() {
-    const { filteredNews } = this.state // аналогично, используем состояние
+    const { filteredNews } = this.state
 
     return (
       <div className="news">
