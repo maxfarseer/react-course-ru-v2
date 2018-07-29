@@ -8,6 +8,28 @@ class App extends React.Component {
     news: null,
     isLoading: false,
   }
+  static getDerivedStateFromProps(props, state) {
+    let nextFilteredNews
+
+    // смотрим в state.news (ранее смотрели в props)
+    // и проверяем, чтобы не клоинировать null
+    // например, в момент первой отрисовки
+    if (Array.isArray(state.news)) {
+      nextFilteredNews = [...state.news]
+
+      nextFilteredNews.forEach((item, index) => {
+        if (item.bigText.toLowerCase().indexOf('pubg') !== -1) {
+          item.bigText = 'СПАМ'
+        }
+      })
+
+      return {
+        filteredNews: nextFilteredNews,
+      }
+    }
+
+    return null
+  }
   componentDidMount() {
     this.setState({ isLoading: true })
     fetch('http://localhost:3000/data/newsData.json')
