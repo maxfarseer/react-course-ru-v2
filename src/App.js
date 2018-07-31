@@ -11,9 +11,6 @@ class App extends React.Component {
   static getDerivedStateFromProps(props, state) {
     let nextFilteredNews
 
-    // смотрим в state.news (ранее смотрели в props)
-    // и проверяем, чтобы не клоинировать null
-    // например, в момент первой отрисовки
     if (Array.isArray(state.news)) {
       nextFilteredNews = [...state.news]
 
